@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { getRequest } from '../../../utils/api';
 import ButtonCom from '../../../CommonComponent/ButtonCom';
@@ -17,39 +17,25 @@ const AllStudent = () => {
     const [dataNotFound, setDataNoFound] = useState(false)
     const allStudentArray = useSelector((state) => state.teacherStudent);
     useEffect(() => {
-        if (allStudentArray?.allStudent) {
-            setAllStudent(allStudentArray?.allStudent)
+        if (allStudentArray) {
+            setStudents(allStudentArray?.allStudent);
         }
-    },[allStudentArray])
-  
-    useEffect(() => {
-        let apiEndpoint = allStudent ? 'dashboard/Teachers' : 'dashboard/Teachers/StudentForExam';
-        const fetchData = async () => {
-            const response = await getRequest(apiEndpoint, token);
-            if (response.statusCode === 200) {
-                setStudents(response.data);
-                setDataNoFound(true);
-            }
-            else {
-                console.log(response?.message);
-                setDataNoFound(true);
-            }
-        }
-        fetchData();
-    }, [allStudent]);
+    }, [])
 
     useEffect(() => {
         let apiEndpoint = allStudent ? 'dashboard/Teachers' : 'dashboard/Teachers/StudentForExam';
         dispatch(allStudentList(apiEndpoint,token))
     },[allStudent])
     
-    const tableData = students.map((val, index) => ({
-        Index: index,
-        Name: val.name,
-        Email: val.email,
-        Status: val.status,
-        Action: <ButtonCom text='student Details' id={val._id} onClick={() => navigate(`/teacher/student/${val._id}`)} />
-    }))
+    const tableData = useMemo(() => {
+        return students.map((val, index) => ({
+            Index: index,
+            Name: val.name,
+            Email: val.email,
+            Status: val.status,
+            Action: <ButtonCom text='student Details' id={val._id} onClick={() => navigate(`/teacher/student/${val._id}`)} />
+        }))
+    }, [students]);
     return (
         <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", }}>
             <div style={{ display: "flex", justifyContent: 'space-between', padding: "0px 20px", maxWidth: "900px", width: "100%", flexWrap: "wrap", alignItems: 'center' }}>

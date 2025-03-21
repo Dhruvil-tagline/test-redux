@@ -6,7 +6,7 @@ import menu from '../assets/menu.png'
 import exam from '../assets/exam.png'
 import '../Css/Navbar.css'
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 const TeacherPage = ({ navObj }) => {
     const [openNav, setOpenNav] = useState(false);
@@ -43,6 +43,7 @@ const TeacherPage = ({ navObj }) => {
                 </div>
             </div>
             <div style={{ padding: '20px 0px' }}>
+             
                 <Outlet />
             </div>
         </div>

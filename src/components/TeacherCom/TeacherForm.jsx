@@ -125,7 +125,8 @@ const TeacherForm = () => {
     [examData, allQuestionError]
   );
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     let result = handleQuestionSave(currentQuestion);
     if (!handleValidate(result)) return;
     setIsSubmitting(true);
@@ -189,11 +190,17 @@ const TeacherForm = () => {
             flexWrap: "wrap",
           }}
         >
-          <div style={{ maxWidth: "1100px" }}>
+          <form
+            onSubmit={handleSubmit}
+            onReset={resetForm}
+            style={{ maxWidth: "1100px" }}
+          >
             <label htmlFor="subjectName" style={{ fontSize: "20px" }}>
               Subject Name
             </label>{" "}
-            <span style={{ color: "red" }}>{error.subjectError}</span>
+            {error.subjectError && (
+              <span style={{ color: "red" }}>{error.subjectError}</span>
+            )}
             <InputCom
               type="text"
               name="subjectName"
@@ -213,7 +220,9 @@ const TeacherForm = () => {
             >
               Question
             </label>
-            <span style={{ color: "red" }}>{error.queError}</span>
+            {error.queError && (
+              <span style={{ color: "red" }}>{error.queError}</span>
+            )}
             <div>
               <div
                 style={{
@@ -223,14 +232,16 @@ const TeacherForm = () => {
                 }}
               >
                 <div>
-                  <label htmlFor="question" >
+                  <label htmlFor="question">
                     Question {currentQuestion + 1}
                   </label>{" "}
-                  <span style={{ color: "red" }}>
-                    {questionsError.questionError}
-                  </span>
-                                  <InputCom
-
+                  {questionsError.questionError && (
+                    <span style={{ color: "red" }}>
+                      {" "}
+                      {questionsError.questionError}{" "}
+                    </span>
+                  )}
+                  <InputCom
                     name="question"
                     type="text"
                     placeholder="Enter question"
@@ -245,9 +256,12 @@ const TeacherForm = () => {
                     }
                   />
                 </div>
-                <span style={{ color: "red" }}>
-                  {questionsError.optionsError}
-                </span>
+                {questionsError.optionsError && (
+                  <span style={{ color: "red" }}>
+                    {" "}
+                    {questionsError.optionsError}{" "}
+                  </span>
+                )}
                 <div
                   style={{
                     display: "flex",
@@ -282,9 +296,12 @@ const TeacherForm = () => {
                     Select Correct Answer:{" "}
                     {examData?.questions[currentQuestion]?.answer}
                   </label>
-                  <span style={{ color: "red" }}>
-                    {questionsError.answerError}
-                  </span>
+                  {questionsError.answerError && (
+                    <span style={{ color: "red" }}>
+                      {" "}
+                      {questionsError?.answerError}{" "}
+                    </span>
+                  )}
                 </div>
                 <div
                   style={{
@@ -334,6 +351,7 @@ const TeacherForm = () => {
                 }}
               >
                 <ButtonCom
+                  type="button"
                   disabled={currentQuestion === 0}
                   text="Previous"
                   onClick={() => {
@@ -341,6 +359,7 @@ const TeacherForm = () => {
                   }}
                 />
                 <ButtonCom
+                  type="button"
                   text="Next"
                   disabled={currentQuestion === TOTAL_QUESTIONS - 1}
                   onClick={() => {
@@ -370,18 +389,17 @@ const TeacherForm = () => {
             >
               <ButtonCom
                 text="Cancel"
-                              color="red"
-                onClick={resetForm}
+                color="blue"
+                type="reset"
                 style={{ backgroundColor: "gray" }}
               />
-              <ButtonCom text="Back" onClick={() => navigate(-1)} />
               <ButtonCom
+                type="submit"
                 color="green"
                 text={state?.existingExam ? "Update" : "Submit"}
-                onClick={handleSubmit}
               />
             </div>
-          </div>
+          </form>
         </div>
       </div>
     </div>

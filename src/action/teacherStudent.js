@@ -8,9 +8,8 @@ export const  allStudentList = (apiEndpoint,token) => async (dispatch) => {
 
     try {
         const response = await getRequest(apiEndpoint, token);
-
         if (response?.statusCode === 200) {
-            dispatch({ type: "FETCH_TEACHER_STUDENT_SUCCESS", payload: response?.data?.questions });
+            dispatch({ type: "FETCH_TEACHER_STUDENT_SUCCESS", payload: response?.data });
         } else {
             dispatch({ type: "ETCH_TEACHER_STUDENT_FAILURE", payload: response?.message });
         }

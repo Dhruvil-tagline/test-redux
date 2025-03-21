@@ -7,13 +7,13 @@ import { useSelector } from 'react-redux';
 const tableHeader = ['Index', 'Subject', 'Email', 'Notes', 'Action'];
 
 const StudentDashboard = () => {
-  const { token } = useSelector((state) => state.auth);
+  const user = useSelector((state) => state.auth);
   const [exam, setExam] = useState([]);
   const [dataNotFound, setDataNotFound] = useState(false);
   const navigate = useNavigate();
   useEffect(() => {
     const fetchData = async () => {
-      let response = await getRequest('student/studentExam', token);
+      let response = await getRequest('student/studentExam', user?.token);
       if (response.statusCode === 200) {
         setDataNotFound(true);
         setExam(response.data);
@@ -36,6 +36,10 @@ const StudentDashboard = () => {
   }, [exam])
   return (
     <div style={{ padding: '20px' }}>
+      <div style={{ display: "flex", justifyContent: "space-around", alignItems: "center", flexWrap: "wrap", gap: "30px", color: "skyBlue", marginBottom: "20px", textShadow: "12px 12px  4px black" }}>
+        <h1>Hello  {user?.user?.name}</h1>
+        <h1>Role: {user?.user?.role}</h1>
+      </div>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
         <div style={{ maxWidth: "1100px", padding: "10px", width: "100%" }}>
           <Table tableData={tableData} tableHeader={tableHeader} dataNotFound={dataNotFound} />

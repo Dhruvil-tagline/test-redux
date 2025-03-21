@@ -58,7 +58,7 @@ const ExamDetail = () => {
         <div style={{ display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", padding: "0px 20px" }}>
             <div style={{ width: "100%", maxWidth: "900px" }}>
                 <Table tableData={tableData} tableHeader={tableHeader}  dataNotFound={!examData?.questions?.length}/>
-            </div>
+            </div>  
         </div>
     );
 };
